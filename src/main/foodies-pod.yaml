@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foodiespod
+  labels:
+    app: foodies
+spec:
+  containers:
+    - name: foodies
+      image: rushidagwal/foodies:1.0
+      ports:
+        - name: http
+          port: 8080
+          protocol: TCP
+      readinessProbe:
+        httpGet:
+          path: /foodies/actuator/health/readiness
+          port: 8080
+        initialDelaySeconds: 5
+        timeoutSeconds: 5
+        failureThreshold: 3
+      livenessProbe:
+        httpGet:
+          path: /foodies/actuator/health/liveness
+          port: 8080
+        initialDelaySeconds: 5
+        timeoutSeconds: 5
+        failureThreshold: 3
